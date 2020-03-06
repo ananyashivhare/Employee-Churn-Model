@@ -6,7 +6,7 @@ output:
 ---
 ```{r}
 #####Importing the Dataset########
-emp_churn <- read.csv("C:/Users/Amisha Sancheti/Desktop/MITA sem2/Multivariate Analysis/Project/WA_Fn-UseC_-HR-Employee-Attrition.csv")
+emp_churn <- read.csv("C:/Users/19737/Downloads/emp_churn.csv")
 ```
 
 
