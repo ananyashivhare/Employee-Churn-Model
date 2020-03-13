@@ -1,0 +1,134 @@
+---
+title: "FA"
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r}
+#####Importing the Dataset########
+emp_churn <- read.csv("C:/Users/19737/Downloads")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+```{r}
+# Factor Analysis
+# Computing Correlation Matrix
+emp_churn$Attrition <-as.integer(as.factor(emp_churn$Attrition))
+emp_churn$BusinessTravel <-as.integer(as.factor(emp_churn$BusinessTravel))
+emp_churn$Department <-as.integer(as.factor(emp_churn$Department))
+emp_churn$EducationField <-as.integer(as.factor(emp_churn$EducationField))
+emp_churn$Gender <-as.integer(as.factor(emp_churn$Gender))
+emp_churn$JobRole <-as.integer(as.factor(emp_churn$JobRole))
+emp_churn$MaritalStatus <-as.integer(as.factor(emp_churn$MaritalStatus))
+emp_churn$Over18 <-as.integer(as.factor(emp_churn$Over18))
+emp_churn$OverTime <-as.integer(as.factor(emp_churn$OverTime))
+```
+```{r}
+# Factor Analysis
+# Computing Correlation Matrix
+cor.data <- cor(emp_churn)
+cor.data
+```
+```{r}
+plot(cor.data)
+```
+```{r}
+emp_pca <- prcomp(emp_churn[ , which(apply(emp_churn, 2, var) != 0)],scale.=TRUE)
+emp_pca
+summary(emp_pca)
+```
+```{r}
+plot(emp_pca)
+```
+```{r}
+(eigen_data <- round(emp_pca$sdev^2,2))
+names(eigen_data) <- paste("PC",1:12,sep="")
+eigen_data
+```
+```{r}
+sumlambdas <- sum(eigen_data)
+sumlambdas
+```
+```{r}
+propvar <- round(eigen_data/sumlambdas,2)
+propvar
+```
+```{r}
+cumvar_data <- cumsum(propvar)
+cumvar_data
+```
+```{r}
+matlambdas <- rbind(eigen_data,propvar,cumvar_data)
+matlambdas
+```
+```{r}
+rownames(matlambdas) <- c("Eigenvalues","Prop. variance","Cum. prop. variance")
+rownames(matlambdas)
+```
+```{r}
+eigvec.data <- emp_pca$rotation
+print(emp_pca)
+```
+```{r}
+pcafactors.data <- eigvec.data[,1:5]
+pcafactors.data
+```
+```{r}
+unrot.fact.data <- sweep(pcafactors.data,MARGIN=2,emp_pca$sdev[1:4],`*`)
+unrot.fact.data
+```
+```{r}
+communalities.data <- rowSums(unrot.fact.data^2)
+communalities.data
+```
+```{r}
+#Performing the varimax rotation
+rot.fact.data <- varimax(unrot.fact.data)
+unrot.fact.data
+```
+```{r}
+fact.load.data<- rot.fact.data$loadings[1:12,1:5]
+fact.load.data
+```
+```{r}
+scale.data <- scale(emp_churn)
+scale.data
+```
+```{r}
+as.matrix(scale.data)
+```
+
+
